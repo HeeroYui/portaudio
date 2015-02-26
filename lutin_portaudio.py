@@ -57,6 +57,8 @@ def create(target):
 		'-DHAVE_NANOSLEEP=1'
 		])
 	
+	myModule.compile_version_CC(1999)
+	
 	myModule.add_optionnal_module_depend('alsa', "PA_USE_ALSA=1")
 	myModule.add_optionnal_module_depend('jack', "PA_USE_JACK=1")
 	myModule.add_optionnal_module_depend('oss', "PA_USE_OSS=1")
