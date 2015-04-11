@@ -57,13 +57,12 @@ def create(target):
 		'-DHAVE_NANOSLEEP=1'
 		])
 	
-	myModule.compile_version_CC(1999)
+	myModule.compile_version_CC(1999, gnu=True)
 	
 	myModule.add_optionnal_module_depend('alsa', "PA_USE_ALSA=1")
 	myModule.add_optionnal_module_depend('jack', "PA_USE_JACK=1")
 	myModule.add_optionnal_module_depend('oss', "PA_USE_OSS=1")
 	
-	myModule.add_module_depend(['audio', 'airtaudio', 'drain', 'ejson'])
 	myModule.add_export_path(tools.get_current_path(__file__) + '/include')
 	myModule.add_path(tools.get_current_path(__file__)+"/src/common")
 	myModule.add_path(tools.get_current_path(__file__)+"/src/os/unix")
