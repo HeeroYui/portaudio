@@ -1,7 +1,7 @@
 #!/usr/bin/python
-import lutinModule as module
-import lutinTools as tools
-import lutinDebug as debug
+import lutin.module as module
+import lutin.tools as tools
+import lutin.debug as debug
 
 def get_desc():
 	return "portaudio : Audio wrapper interface"
@@ -28,7 +28,7 @@ def create(target):
 		'src/os/unix/pa_unix_util.c'
 		])
 	
-	myModule.compile_flags_CC([
+	myModule.compile_flags('c', [
 		'-DPA_LITTLE_ENDIAN',
 		'-DPACKAGE_NAME=\"\"',
 		'-DPACKAGE_TARNAME=\"\"',
@@ -59,9 +59,9 @@ def create(target):
 	
 	myModule.compile_version_CC(1999, gnu=True)
 	
-	myModule.add_optionnal_module_depend('alsa', "PA_USE_ALSA=1")
-	myModule.add_optionnal_module_depend('jack', "PA_USE_JACK=1")
-	myModule.add_optionnal_module_depend('oss', "PA_USE_OSS=1")
+	myModule.add_optionnal_module_depend('alsa', ["c", "-DPA_USE_ALSA=1"])
+	myModule.add_optionnal_module_depend('jack', ["c", "-DPA_USE_JACK=1"])
+	myModule.add_optionnal_module_depend('oss', ["c", "-DPA_USE_OSS=1"])
 	
 	myModule.add_export_path(tools.get_current_path(__file__) + '/include')
 	myModule.add_path(tools.get_current_path(__file__)+"/src/common")
