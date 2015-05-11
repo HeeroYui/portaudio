@@ -58,7 +58,14 @@ def create(target):
 	myModule.add_path(tools.get_current_path(__file__)+"/src/common")
 	
 	if target.name=="Windows":
-		pass
+		myModule.add_src_file([
+			'src/os/win/pa_win_coinitialize.c',
+			'src/os/win/pa_win_hostapis.c',
+			'src/os/win/pa_win_waveformat.c',
+			'src/os/win/pa_win_util.c',
+			'src/os/win/pa_win_wdmks_utils.c',
+			'src/os/win/pa_x86_plain_converters.c'
+			])
 	elif target.name=="Linux":
 		myModule.add_optionnal_module_depend('alsa', ["c", "-DPA_USE_ALSA=1"])
 		myModule.add_optionnal_module_depend('jack', ["c", "-DPA_USE_JACK=1"])
@@ -73,11 +80,21 @@ def create(target):
 			])
 
 	elif target.name=="MacOs":
-		pass
+		myModule.add_path(tools.get_current_path(__file__)+"/src/os/unix")
+		myModule.add_optionnal_module_depend('oss', ["c", "-DPA_USE_COREAUDIO=1"])
+		myModule.add_src_file([
+			'src/hostapi/coreaudio/pa_mac_core.c',
+			'src/hostapi/coreaudio/pa_mac_core_blocking.c',
+			'src/hostapi/coreaudio/pa_mac_core_utilities.c',
+			'src/os/unix/pa_unix_hostapis.c',
+			'src/os/unix/pa_unix_util.c'
+			])
 	elif target.name=="IOs":
-		pass
+		debug.warning("target for portaudio: " + target.name + " can not be created ... (not supported)");
+		return None
 	elif target.name=="Android":
-		pass
+		debug.warning("target for portaudio: " + target.name + " can not be created ... (not supported)");
+		return None
 	else:
 		debug.warning("unknow target for portaudio: " + target.name);
 	
