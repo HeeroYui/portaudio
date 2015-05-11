@@ -20,12 +20,7 @@ def create(target):
 		'src/common/pa_stream.c',
 		'src/common/pa_trace.c',
 		'src/hostapi/skeleton/pa_hostapi_skeleton.c',
-		'src/hostapi/alsa/pa_linux_alsa.c',
-		'src/hostapi/jack/pa_jack.c',
-		'src/hostapi/oss/pa_unix_oss.c',
-		'src/common/pa_ringbuffer.c',
-		'src/os/unix/pa_unix_hostapis.c',
-		'src/os/unix/pa_unix_util.c'
+		'src/common/pa_ringbuffer.c'
 		])
 	
 	myModule.compile_flags('c', [
@@ -59,13 +54,32 @@ def create(target):
 	
 	myModule.compile_version_CC(1999, gnu=True)
 	
-	myModule.add_optionnal_module_depend('alsa', ["c", "-DPA_USE_ALSA=1"])
-	myModule.add_optionnal_module_depend('jack', ["c", "-DPA_USE_JACK=1"])
-	myModule.add_optionnal_module_depend('oss', ["c", "-DPA_USE_OSS=1"])
-	
 	myModule.add_export_path(tools.get_current_path(__file__) + '/include')
 	myModule.add_path(tools.get_current_path(__file__)+"/src/common")
-	myModule.add_path(tools.get_current_path(__file__)+"/src/os/unix")
+	
+	if target.name=="Windows":
+		pass
+	elif target.name=="Linux":
+		myModule.add_optionnal_module_depend('alsa', ["c", "-DPA_USE_ALSA=1"])
+		myModule.add_optionnal_module_depend('jack', ["c", "-DPA_USE_JACK=1"])
+		myModule.add_optionnal_module_depend('oss', ["c", "-DPA_USE_OSS=1"])
+		myModule.add_path(tools.get_current_path(__file__)+"/src/os/unix")
+		myModule.add_src_file([
+			'src/hostapi/alsa/pa_linux_alsa.c',
+			'src/hostapi/jack/pa_jack.c',
+			'src/hostapi/oss/pa_unix_oss.c',
+			'src/os/unix/pa_unix_hostapis.c',
+			'src/os/unix/pa_unix_util.c'
+			])
+
+	elif target.name=="MacOs":
+		pass
+	elif target.name=="IOs":
+		pass
+	elif target.name=="Android":
+		pass
+	else:
+		debug.warning("unknow target for portaudio: " + target.name);
 	
 	# add the currrent module at the 
 	return myModule
